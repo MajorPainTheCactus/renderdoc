@@ -380,9 +380,13 @@ manually, but since it is common this helper is provided.
 )");
   inline PointerVal GetPointer() const
   {
-    ResourceId pointerShader;
-    memcpy(&pointerShader, &value.u64v[2], sizeof(pointerShader));
-    return {value.u64v[0], pointerShader, uint32_t(value.u64v[1] & 0xFFFFFFFF)};
+    PointerVal ptr;
+
+    ptr.pointer = value.u64v[0];
+    memcpy(&ptr.shader, &value.u64v[2], sizeof(ResourceId));
+    ptr.pointerTypeID = uint32_t(value.u64v[1] & 0xFFFFFFFF);
+
+    return ptr;
   }
 
   DOCUMENT(R"(Utility function for setting a bindpoint reference.
