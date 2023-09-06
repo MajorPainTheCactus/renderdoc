@@ -5001,7 +5001,7 @@ void GatherPSInputDataForInitialValues(const DXBC::DXBCContainer *dxbc,
 
           initialValues.push_back(PSInputElement(-1, 0, numCols, ShaderBuiltin::Undefined, true));
 
-          rdcstr name = prevStageDxbc.OutputSig[os].semanticIdxName;
+          rdcstr name = prevStageDxbc.OutputSig[os].semanticName + ToStr(prevStageDxbc.OutputSig[os].semanticIndex);
 
           psInputDefinition += ToStr((uint32_t)numCols) + " input_" + name + " : " + name + ";\n";
         }
@@ -5030,7 +5030,7 @@ void GatherPSInputDataForInitialValues(const DXBC::DXBCContainer *dxbc,
     int numCols = (sig.regChannelMask & 0x1 ? 1 : 0) + (sig.regChannelMask & 0x2 ? 1 : 0) +
                   (sig.regChannelMask & 0x4 ? 1 : 0) + (sig.regChannelMask & 0x8 ? 1 : 0);
 
-    rdcstr name = sig.semanticIdxName;
+    rdcstr name = sig.semanticName + ToStr(sig.semanticIndex);
 
     // arrays of interpolators are handled really weirdly. They use cbuffer
     // packing rules where each new value is in a new register (rather than
