@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
+#define STB_TRUETYPE_IMPLEMENTATION
+
 #include "data/glsl_shaders.h"
 #include "maths/matrix.h"
 #include "maths/vec.h"
