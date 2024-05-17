@@ -180,7 +180,7 @@ extern "C" RENDERDOC_API uint32_t RENDERDOC_CC RENDERDOC_VertexOffset(Topology t
   return primitive * RENDERDOC_NumVerticesPerPrimitive(topology);
 }
 
-extern "C" RENDERDOC_API float RENDERDOC_CC RENDERDOC_HalfToFloat(uint16_t half)
+/*extern "C" RENDERDOC_API*/ float RENDERDOC_CC RENDERDOC_HalfToFloat(uint16_t half)
 {
   return ConvertFromHalf(half);
 }
