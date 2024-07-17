@@ -24,7 +24,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>renderdoc</RootNamespace>
     <ProjectName>renderdoc</ProjectName>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>$(RenderDocLatestWin10SDKVersion)</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\util\WindowsSDKTarget.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -50,7 +50,7 @@
     <ExcludePath>$(ExcludePath)</ExcludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
     <ClCompile>
@@ -93,7 +93,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Development'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-	  <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -101,7 +101,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-	  <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(SolutionDir)$(Platform)\$(Configuration)\breakpad_common.lib;$(SolutionDir)$(Platform)\$(Configuration)\crash_generation_client.lib;$(SolutionDir)$(Platform)\$(Configuration)\exception_handler.lib;%(AdditionalDependencies)</AdditionalDependencies>
