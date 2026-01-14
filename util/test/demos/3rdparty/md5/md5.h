@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This is an OpenSSL-compatible implementation of the RSA Data Security, Inc.
  * MD5 Message-Digest Algorithm (RFC 1321).
  *
@@ -43,12 +43,13 @@ typedef struct {
 	MD5_u32plus block[16];
 } MD5_CTX;
 
-extern void MD5_Init(MD5_CTX *ctx);
-extern void MD5_Update(MD5_CTX *ctx, const void *data, unsigned long size);
-extern void MD5_Final(unsigned char *result, MD5_CTX *ctx);
+extern void RD_MD5_Init(MD5_CTX *ctx);
+extern void RD_MD5_Update(MD5_CTX *ctx, const void *data, unsigned long size);
+extern void RD_MD5_Final(unsigned char *result, MD5_CTX *ctx);
 
 #if defined(__cplusplus)
 };    // extern "C"
 #endif
 
 #endif
+
