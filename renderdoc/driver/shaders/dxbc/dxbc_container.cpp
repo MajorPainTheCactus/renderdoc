@@ -1220,7 +1220,7 @@ bool DXBCContainer::HashContainer(void *ByteCode, size_t BytecodeLength)
     return false;
 
   MD5_CTX md5ctx = {};
-  MD5_Init(&md5ctx);
+  RD_MD5_Init(&md5ctx);
 
   // the hashable data starts immediately after the hash.
   byte *data = (byte *)&header->containerVersion;
@@ -1233,7 +1233,7 @@ bool DXBCContainer::HashContainer(void *ByteCode, size_t BytecodeLength)
   // MD5 works on 64-byte chunks, process the first set of whole chunks, leaving 0-63 bytes left
   // over
   uint32_t leftoverLength = length % 64;
-  MD5_Update(&md5ctx, data, length - leftoverLength);
+  RD_MD5_Update(&md5ctx, data, length - leftoverLength);
 
   data += length - leftoverLength;
 
@@ -1265,26 +1265,26 @@ bool DXBCContainer::HashContainer(void *ByteCode, size_t BytecodeLength)
   if(leftoverLength >= 56)
   {
     // pass in the leftover data padded out to 64 bytes with zeroes
-    MD5_Update(&md5ctx, data, leftoverLength);
+    RD_MD5_Update(&md5ctx, data, leftoverLength);
 
     block[0] = 0x80;    // first padding bit is 1
-    MD5_Update(&md5ctx, block, 64 - leftoverLength);
+    RD_MD5_Update(&md5ctx, block, 64 - leftoverLength);
 
     // the final block contains the number of bits in the first dword, and the weird upper bits
     block[0] = numBits;
     block[15] = numBitsPart2;
 
     // process this block directly, we're replacing the call to MD5_Final here manually
-    MD5_Update(&md5ctx, block, 64);
+    RD_MD5_Update(&md5ctx, block, 64);
   }
   else
   {
     // the leftovers mean we can put the padding inside the final block. But first we pass the "low"
     // number of bits:
-    MD5_Update(&md5ctx, &numBits, sizeof(numBits));
+    RD_MD5_Update(&md5ctx, &numBits, sizeof(numBits));
 
     if(leftoverLength)
-      MD5_Update(&md5ctx, data, leftoverLength);
+      RD_MD5_Update(&md5ctx, data, leftoverLength);
 
     uint32_t paddingBytes = 64 - leftoverLength - 4;
 
@@ -1294,7 +1294,7 @@ bool DXBCContainer::HashContainer(void *ByteCode, size_t BytecodeLength)
     // then add the remainder of the 'length' here in the final part of the block
     memcpy(((byte *)block) + paddingBytes - 4, &numBitsPart2, 4);
 
-    MD5_Update(&md5ctx, block, paddingBytes);
+    RD_MD5_Update(&md5ctx, block, paddingBytes);
   }
 
   header->hashValue[0] = md5ctx.a;

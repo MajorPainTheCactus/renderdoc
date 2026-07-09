@@ -38,6 +38,10 @@ struct PointerVal
 {
   DOCUMENT("");
   PointerVal() = default;
+  // FORK-ADDED (v1.44 C++20 compat): the C++20 aggregate rule (P1008) makes a class with a
+  // user-declared ctor a non-aggregate, so the brace-init `return {a,b,c}` in GetPointer() no
+  // longer compiles under ModderSuite's C++20 build. An explicit ctor restores it (C++14-safe too).
+  PointerVal(uint64_t p, ResourceId s, uint32_t t) : pointer(p), shader(s), pointerTypeID(t) {}
   PointerVal(const PointerVal &) = default;
   PointerVal &operator=(const PointerVal &) = default;
 

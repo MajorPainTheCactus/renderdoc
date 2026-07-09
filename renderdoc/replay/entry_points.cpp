@@ -416,10 +416,18 @@ RENDERDOC_InjectIntoProcess(uint32_t pid, const rdcarray<EnvironmentModification
   return ret;
 }
 
-extern "C" RENDERDOC_API void RENDERDOC_CC RENDERDOC_FreeArrayMem(void *mem)
+// FORK-ADDED (v1.44 static-embed compat): the ArrayMem allocators are HOST-provided by
+// ModderSuite (runtime/include/core.inl) as plain C++ symbols, and RenderDoc is linked as a
+// STATIC lib INTO the host. RenderDoc must NOT also define them, or the two strong definitions
+// collide (LNK2005 "already defined in dllmain.obj"); with the plain-C++ header declaration
+// RenderDoc's rdcarray/rdcstr calls now resolve to the host's definition at final link.
+// RENDERDOC_OutOfMemory stays defined here (the host's core.inl calls it as extern).
+#if 0
+void RENDERDOC_FreeArrayMem(void *mem)
 {
   free(mem);
 }
+#endif
 
 // not exported, this is needed for calling from the container allocate functions
 void RENDERDOC_OutOfMemory(uint64_t sz)
@@ -427,13 +435,15 @@ void RENDERDOC_OutOfMemory(uint64_t sz)
   RDCFATAL("Allocation failed for %llu bytes", sz);
 }
 
-extern "C" RENDERDOC_API void *RENDERDOC_CC RENDERDOC_AllocArrayMem(uint64_t sz)
+#if 0
+void *RENDERDOC_AllocArrayMem(uint64_t sz)
 {
   void *ret = malloc((size_t)sz);
   if(ret == NULL)
     RENDERDOC_OutOfMemory(sz);
   return ret;
 }
+#endif
 
 extern "C" RENDERDOC_API uint32_t RENDERDOC_CC RENDERDOC_EnumerateRemoteTargets(const rdcstr &URL,
                                                                                 uint32_t nextIdent)
